@@ -1,5 +1,3 @@
-
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,32 +8,50 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 public class File2xml {
 
 
-        public static void main(String[] args) {
+        public static void main(String[] args) throws IOException {
             test();
         }
 
-        private static void test() {
-            int startRowNumber = 0;
+        private static void test() throws IOException {
+            //int startRowNumber = 0;
             int rowNumberSize = 1;
-            String dirPath = "C:\\Users\\*****\\Desktop\\";
-            String sourceFileName = "***************";
+            //String dirPath = "C:\\Users\\xigao\\Desktop\\data\\";
+            //String sourceFileName = "20160602T140055306-9bf546a4c0b14c1a882820aa652f8206";
 
+            String dirPath = "C:\\Users\\xigao\\Documents\\group\\tls-data\\data\\";
+
+            Files.walk(Paths.get("C:\\Users\\xigao\\Documents\\group\\tls-data\\data\\")).forEach(filePath -> {
+                if (Files.isRegularFile(filePath)) {
+                    System.out.println(filePath);
+                    Path p = Paths.get(String.valueOf(filePath));
+                    String sourceFileName = p.getFileName().toString();
+                    for(int i=1;i<=30;i++){
+                        int startRowNumber = i * rowNumberSize;
+                        splitFile(startRowNumber,rowNumberSize,String.valueOf(filePath),sourceFileName);
+                    }
+                }
+            });
+/*
             for(int i=1;i<=30;i++){
                 startRowNumber = i*rowNumberSize;
                 splitFile(startRowNumber,rowNumberSize,dirPath,sourceFileName);
-            }
+            }*/
+
         }
 
 
         public static void splitFile(int startRowNumber, int rowNumberSize,
                                      String dirPath, String sourceFileName) {
 
-            File inputFile = new File(dirPath+sourceFileName);
+            File inputFile = new File(dirPath);
 
             if(inputFile==null || !inputFile.exists()){
                 throw new RuntimeException("File not exist, file path: "+inputFile.getAbsolutePath());
@@ -49,14 +65,14 @@ public class File2xml {
 
 
             int serilizeNumber = 1;
-            String outputPath = dirPath+realFileName+"_"+serilizeNumber + suffix;
+            String outputPath = dirPath+"_"+serilizeNumber + suffix;
             File outputFile = new File(outputPath);
 
             while(outputFile.exists()){
 
                 serilizeNumber++;
 
-                outputPath = dirPath+realFileName+"_"+serilizeNumber + suffix;
+                outputPath = dirPath+"_"+serilizeNumber + suffix;
                 outputFile = new File(outputPath);
             }
 
@@ -78,7 +94,7 @@ public class File2xml {
                 reader = new InputStreamReader(in,"utf-8");
                 br = new BufferedReader(reader);
 
-                //写出
+
                 out = new FileOutputStream(outputFile);
                 writer = new OutputStreamWriter(out, "utf-8");
                 bw = new BufferedWriter(writer);
