@@ -23,12 +23,12 @@ public class File2xml {
         private static void test() throws IOException {
             //int startRowNumber = 0;
             int rowNumberSize = 1;
-            //String dirPath = "C:\\Users\\xigao\\Desktop\\data\\";
-            //String sourceFileName = "20160602T140055306-9bf546a4c0b14c1a882820aa652f8206";
+            //String dirPath = "C:\\Users\\*****\\Desktop\\data\\";
+;
 
-            String dirPath = "C:\\Users\\xigao\\Documents\\group\\tls-data\\data\\";
+            String dirPath = "C:\\Users\\*****\\Documents\\group\\******\\data\\";
 
-            Files.walk(Paths.get("C:\\Users\\xigao\\Documents\\group\\tls-data\\data\\")).forEach(filePath -> {
+            Files.walk(Paths.get("C:\\Users\\*****\\Documents\\group\\******\\data\\")).forEach(filePath -> {
                 if (Files.isRegularFile(filePath)) {
                     System.out.println(filePath);
                     Path p = Paths.get(String.valueOf(filePath));
